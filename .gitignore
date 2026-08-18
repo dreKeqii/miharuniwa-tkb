@@ -1,0 +1,57 @@
+# --- Gradle ---
+.gradle
+build
+.kotlin
+
+# --- Local configuration & secrets ---
+local.properties
+.env
+debug.keystore
+debug.keystore.base64
+my-upload-key.jks
+
+# --- IDE ---
+*.iml
+.idea
+captures
+.externalNativeBuild
+.cxx
+.cxx/cmake/
+.vscode
+*.swp
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+
+# --- Android build outputs ---
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+bin/
+gen/
+out/
+release/
+build/
+
+# --- Test outputs ---
+/test-results/
+/reports/
+/screenshots/
+*.exec
+
+# --- Misc / temp ---
+*.log
+*.tmp
+*.orig
+*.patch
+*.rej
+*.bak
+backups/
+databases/
+
+# --- AI tooling (personal agent config, not project source) ---
+.agents/
+assets/.aistudio/
