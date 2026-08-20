@@ -1,50 +1,55 @@
 # MiharuNiwa — TKB
 
-**Ứng dụng Android offline-first để xem thời khóa biểu và bảng điểm.**
+**Ứng dụng Android cá nhân offline-first để xem thời khóa biểu và bảng điểm.**
 
 ---
 
-## Tổng quan
+## Tổng quan (AI viết)
 
-MiharuNiwa — TKB là ứng dụng Android gốc cho sinh viên xem thời khóa biểu hàng tuần
+MiharuNiwa — TKB là ứng dụng Android gốc cho sinh viên trường Cao đẳng Đồng Khởi xem thời khóa biểu hàng tuần
 (TKB = *thời khóa biểu*) và bảng điểm học phần. Ứng dụng cào dữ liệu từ một trang WordPress
 ngay trên thiết bị, lưu đệm toàn bộ để thời khóa biểu và PDF vẫn xem được khi offline, và có
-thể tùy chọn dùng Gemini API để tự động đọc PDF thời khóa biểu / bảng điểm.
+thể tùy chọn dùng Gemini API để tự động đọc PDF thời khóa biểu (cho thông báo môn học) hoặc bảng điểm.
 
 Ứng dụng, giao diện và comment trong code đều viết bằng tiếng Việt.
 
 ## Vì sao dự án này tồn tại
 
-Đây là dự án cá nhân để giải quyết một vấn đề thực tế: cách chính thống để xem thời khóa biểu
-buộc phải duyệt đi duyệt lại một trang web chậm và phụ thuộc cấu trúc. Mục tiêu là một client
-Android nhanh, xem được khi offline, hiển thị cùng thông tin với ít thao tác hơn — không phải
-sản phẩm thương mại.
+Đây là dự án cá nhân để giải quyết vấn đề thực tế: web trường thiết kế quá ngu và chậm, thời khóa biểu và bảng điểm đều là file PDF và dùng iframe dẫn link từ Google Drive, hình ảnh cho ra trên web không thể nào nát hơn, muốn nét phải mở qua Google Drive.
 
-## Tính năng
+Quá mệt với cái quy trình phức tạp chỉ để xem và chụp thời khóa biểu, thế là app này ra đời, có thể xem thời khóa biểu mới ngay trên app Android native, không cần mở web, đảm bảo mượt hơn web, nhưng load thì vẫn chậm, giới hạn web trường nó thế rồi. Ngoài ra còn có bảng điểm, sổ tay sinh viên và các biểu mẫu của trường.
 
-- **Cào dữ liệu lịch học** — tách cấu trúc trang lịch hàng tuần (`.wp-block-post-title a`)
-  bằng Jsoup và lưu vào cơ sở dữ liệu Room cục bộ.
-- **Offline-first** — tuần, chi tiết lịch, PDF và điểm đều được lưu đệm; app mở là hiện dữ liệu
-  đã cache ngay, sau đó mới làm mới khi có cơ hội.
-- **Ghim lịch học** — ghim một lịch học cụ thể (ví dụ *CS1 / CS2* + hệ) lên đầu màn hình chính
-  để truy cập một chạm.
-- **Trình xem PDF có zoom** — PDF trên Google Drive được tải về và hiển thị với zoom đa chạm và
-  quán tính.
-- **Cắt & xuất ảnh** — chọn một vùng của thời khóa biểu (ví dụ chỉ lớp của bạn) và lưu thành PNG
-  độ phân giải gốc qua Storage Access Framework.
-- **Thông báo cập nhật ngầm** — worker định kỳ kiểm tra file ID Google Drive mới/đổi (chỉ vào
-  thứ Sáu và thứ Bảy) rồi đẩy thông báo khi có thay đổi.
-- **Bảng điểm & học bạ** — duyệt bảng điểm theo lớp và tổng quan từng sinh viên; tùy chọn tự
-  động bóc tách PDF điểm bằng Gemini API.
-- **Biểu mẫu** — tải và xem các biểu mẫu hành chính dạng PDF.
-- **Widget màn hình chính** — widget dựa trên Glance để xem nhanh lịch học.
-- **Nhắc lớp học** — cấu hình báo thức sáng/chiều theo lớp đang theo dõi.
+Đây là dự án cá nhân, hiện chỉ 1 người dùng, không thương mại, thằng tạo ra nó cũng chỉ dùng nó đến giữa 2027. Tốt nghiệp xong cũng cho cút luôn.
 
-## Kiến trúc
+Gần như toàn bộ code đều được viết bằng AI, [cụ thể](#phát-triển-có-hỗ-trợ-ai-ai-viết).
 
-Ứng dụng Compose một Activity, không dùng framework DI. `MainActivity` tự dựng đồ thị đối tượng
-— `AppPreferences`, `AppDatabase` (Room), `ScheduleRepository`, `OkHttpClient`, `PdfDownloader`
-— rồi truyền vào composable `TkbApp`.
+Tới đây thôi, khúc dưới AI viết hết, đọc cũng được mà không đọc cũng được, chả sao.
+
+## Tính năng (AI viết)
+
+- **Cào dữ liệu lịch học** — dùng Jsoup tách link các tuần học (`.wp-block-post-title a`) rồi
+  nhét hết vô database Room cục bộ, thế là xong.
+- **Offline-first** — tuần, chi tiết lịch, PDF, điểm số đều cache hết. Mở app là thấy dữ liệu
+  ngay, không cần mạng; có mạng thì nó tự đi làm mới, lúc nào không biết cũng được.
+- **Ghim lịch học** — ghim đúng cái lịch mình học (ví dụ *CS1 / CS2* + hệ) lên đầu màn hình
+  chính, một chạm là mở, đỡ phải mò.
+- **Trình xem PDF có zoom** — PDF trên Google Drive được tải về xem thẳng trong app, zoom đa
+  chạm mượt, có cả quán tính.
+- **Cắt & xuất ảnh** — kéo chọn đúng vùng cần (ví dụ chỉ phần lớp mình học) rồi lưu PNG nét
+  căng, không vỡ ảnh như chụp màn hình web qua Storage Access Framework.
+- **Thông báo cập nhật ngầm** — worker âm thầm chạy, chỉ thứ Sáu với thứ Bảy mới đi kiểm tra
+  file ID Google Drive đổi chưa, có đổi thì thả thông báo, không có thì im.
+- **Bảng điểm & học bạ** — xem bảng điểm theo lớp và tổng quan sinh viên; lười thì bật Gemini
+  API cho nó tự đọc PDF điểm hộ.
+- **Biểu mẫu** — tải và xem mấy cái biểu mẫu hành chính PDF ngay trong app.
+- **Widget màn hình chính** — widget Glance liếc qua là biết lịch hôm nào, khỏi mở app.
+- **Nhắc lớp học** — đặt báo thức riêng cho lớp sáng/chiều của mình, khỏi sợ quên.
+
+## Kiến trúc (AI viết)
+
+Compose một Activity duy nhất, không dùng framework DI nào hết — `MainActivity` tự dựng đồ
+thể đối tượng bằng tay: `AppPreferences`, `AppDatabase` (Room), `ScheduleRepository`,
+`OkHttpClient` với `PdfDownloader` — rồi nhét hết vô composable `TkbApp`.
 
 ```
 MainActivity  ── dựng ──►  AppPreferences / AppDatabase / ScheduleRepository / PdfDownloader
@@ -55,59 +60,62 @@ MainActivity  ── dựng ──►  AppPreferences / AppDatabase / ScheduleRe
         widget/ = widget màn hình chính Glance + cập nhật hằng ngày
 ```
 
-- **Tầng dữ liệu** (`data/`): entity/DAO của Room, `AppPreferences` (DataStore) cho toàn bộ cấu
-  hình người dùng, `ScheduleRepository` cho logic cào/offline, `GeminiClient` cho bóc tách PDF
-  bằng AI.
-- **Tầng UI** (`ui/`): theme Material 3 thuần dark viết tay (`ui/theme/Color.kt`), các màn hình
-  trong `ui/screens/`.
-- **Chạy ngầm** (`data/` + `widget/`): worker WorkManager cho kiểm tra cập nhật và widget,
-  `AlarmManager` cho nhắc lớp học.
+- **Tầng dữ liệu** (`data/`): entity/DAO Room phục vụ cào và lưu offline, `AppPreferences`
+  (DataStore) giữ hết cấu hình người dùng, `ScheduleRepository` lo toàn bộ logic cào/đệm
+  offline, `GeminiClient` thì nhờ AI đọc PDF điểm.
+- **Tầng UI** (`ui/`): theme Material 3 dark-only tự viết tay, màu dồn hết trong
+  `ui/theme/Color.kt`, màn hình nằm trong `ui/screens/`.
+- **Chạy ngầm** (`data/` + `widget/`): worker WorkManager lo chuyện kiểm tra cập nhật với
+  widget, `AlarmManager` lo chuyện nhắc lớp học.
 
-Xem `CLAUDE.md` để có phân tích kiến trúc đầy đủ mà người đóng góp sau này cần đọc.
+Muốn biết đầy đủ thì đọc `CLAUDE.md`, phần đó viết cho người nào muốn nhúng tay vào code sau này.
 
-## Ngăn xếp công nghệ
+## Tech Stack (AI viết)
 
 - Kotlin, Jetpack Compose (Material 3), Navigation Compose
 - Room, DataStore Preferences, WorkManager
 - Jsoup (cào HTML), OkHttp + Retrofit + Moshi
 - Google GenAI SDK (Gemini API)
 - Glance (app widget), Coil, `net.engawapg.lib:zoomable`, `vanniktech/android-image-cropper`
-- Robolectric + Roborazzi (test đơn vị / ảnh chụp giao diện)
 
-## Phát triển có hỗ trợ AI
+## Phát triển có hỗ trợ AI (AI viết)
 
-Repository này được phát triển với sự hỗ trợ đáng kể từ AI. AI đã tạo và tái cấu trúc phần lớn
-mã Kotlin và tham gia thảo luận kiến trúc. Con người chịu trách nhiệm xác định yêu cầu sản phẩm,
-quyết định luồng hoạt động, đánh giá kiến trúc, kiểm thử trên thiết bị thật, loại bỏ những phần
-cài đặt sai, quyết định UX và thứ tự ưu tiên, và cải tiến dần dựa trên trải nghiệm sử dụng thực tế.
+Nói thẳng: repo này AI viết gần hết. AI tạo mới lẫn refactor phần lớn Kotlin, và cũng tham
+gia bàn bạc kiến trúc đàng hoàng. Còn con người (tức tao) lo phần quan trọng hơn: quyết định
+app phải làm gì, chọn luồng chạy, thẩm định kiến trúc, test trên máy thật, gạt bỏ code AI
+viết sai — chuyện này xảy ra thường xuyên — chốt UX và thứ tự ưu tiên, rồi mài giũa dần theo
+kiểu dùng thực tế.
 
-Việc sử dụng AI được ghi nhận công khai ở đây, không che giấu.
+Dùng AI thì ghi rõ là dùng AI (Gemini & Claude trong Antigravity), việc gì phải giấu.
 
-## Hạn chế
+## Hạn chế (AI viết)
 
-- **Cào dữ liệu dễ vỡ** — ứng dụng phụ thuộc trực tiếp vào cấu trúc HTML của trang đích
-  (`.wp-block-post-title`, `.wp-block-post-content p`). Nếu chủ trang đổi thiết kế, việc lấy lịch
-  và điểm sẽ hỏng cho tới khi ứng dụng được cập nhật.
-- **Không có backend** — mọi thao tác cào diễn ra phía client, nên nếu server giới hạn tốc độ
-  hoặc dùng Cloudflare thì có thể bị chặn kết nối.
-- **Chỉ hỗ trợ dark theme** — không có light mode hay dynamic color.
-- **Dùng cho một mục đích riêng** — ứng dụng được tinh chỉnh cho một trang WordPress của một
-  trường cụ thể.
+- **Cào dữ liệu dễ vỡ** — app bám chết cứng vào cấu trúc HTML của web trường
+  (`.wp-block-post-title`, `.wp-block-post-content p`). Trường đổi giao diện cái là tèo,
+  phải chờ cập nhật app mới xem lại được.
+- **Không có backend** — mọi thứ cào ngay trên máy, server mà giới hạn tốc độ hay dựng
+  Cloudflare lên là chịu phép.
+- **Chỉ có dark theme** — không light mode, không dynamic color, thích thì dùng, không thì thôi.
+- **Chỉ dùng cho đúng một nơi** — app tinh chỉnh cho đúng cái trang WordPress của trường này,
+  nơi khác dùng không được.
+- **Chả có test tự động nào hết** — Robolectric với Roborazzi cài vô cho có rồi để đó ngủ
+  luôn; từ lúc khai sinh tới giờ toàn test tay trên máy thật. Code sai thì người dùng lãnh
+  đủ trước, coi như là tester bất đắc dĩ.
 
-## Cách build
+## Cách build (AI viết)
 
-Điều kiện tiên quyết: Android Studio (hoặc Android SDK + JDK). Build dùng `JAVA_HOME=~/.local/java`.
+Cần Android Studio (hoặc Android SDK + JDK). Script tự set
+`JAVA_HOME=~/.local/java` cho Linux — ai dùng Windows/macOS thì tự sửa [build.sh](./build.sh).
+Nó sẽ clean, build APK debug, rồi cài qua adb và tự mở app luôn trên máy đang cắm.
 
 ```bash
-# Build + cài + mở trên thiết bị đang kết nối (khuyến nghị)
+# Build + cài + mở luôn trên máy đang cắm cáp
 ./build.sh
 
-# Dùng trực tiếp gradle
+# Hoặc chạy gradle tay
 ./gradlew assembleDebug
-./gradlew testDebugUnitTest        # test đơn vị (Robolectric/Roborazzi)
-./gradlew connectedAndroidTest     # test instrumented
 ```
 
-## Giấy phép
+## Giấy phép (AI viết)
 
-[MIT License](./LICENSE)
+[MIT License](./LICENSE) — lấy làm gì cũng được, trừ kiện tao.

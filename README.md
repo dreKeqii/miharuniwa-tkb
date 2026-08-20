@@ -15,10 +15,24 @@ The application, its UI, and its comments are written in Vietnamese.
 
 ## Why this project exists
 
-This is a personal project built to solve a real workflow problem: the official way to check
-class schedules required repeated browsing of a slow, structure-dependent website. The goal
-was a fast, offline-capable Android client that surfaces the same information with less
-friction — not a commercial product.
+This is a personal project built to solve a real workflow problem: the school's website is
+terribly designed and slow, the class schedule and grade sheets are all PDF files embedded in
+iframes that link out to Google Drive, and the images the web renders couldn't look worse —
+if you want them sharp, you have to open them on Google Drive itself.
+
+Tired of a tedious routine just to view and screenshot a schedule, I made this app. It shows
+the latest schedule right in a native Android app, no need to open the web. It's much smoother
+than the website — loading is still slow, but that's about the limit of what the school's site
+allows. Apart from that, you also get grade sheets, student notes, and the school's
+administrative forms.
+
+This is a personal project with exactly one user, nothing commercial, and the one person who
+uses it will only be using it until mid-2027. After graduation, it gets ditched too.
+
+Nearly all of the code was written with AI, [details here](#ai-assisted-development).
+
+That's about it — everything below here is still AI-written. You can read it or not; I really
+don't mind.
 
 ## Features
 
@@ -72,7 +86,6 @@ read.
 - Jsoup (HTML scraping), OkHttp + Retrofit + Moshi
 - Google GenAI SDK (Gemini API)
 - Glance (app widget), Coil, `net.engawapg.lib:zoomable`, `vanniktech/android-image-cropper`
-- Robolectric + Roborazzi (unit/UI screenshot tests)
 
 ## AI-assisted development
 
@@ -93,6 +106,9 @@ AI usage is documented openly here rather than hidden.
   Cloudflare protection can block requests.
 - **Dark theme only** — there is no light mode or dynamic color.
 - **Single-purpose** — the app is tailored to one specific institution's WordPress site.
+- **Almost no automated tests** — the repo has a few leftover test files (Robolectric +
+  Roborazzi), but from day one all testing has been done by hand on real devices; most bugs
+  are found by the user.
 
 ## Building
 
@@ -104,8 +120,6 @@ Prerequisites: Android Studio (or the Android SDK + JDK). The build uses `JAVA_H
 
 # Gradle directly
 ./gradlew assembleDebug
-./gradlew testDebugUnitTest        # unit tests (Robolectric/Roborazzi)
-./gradlew connectedAndroidTest     # instrumented tests
 ```
 
 ## License
